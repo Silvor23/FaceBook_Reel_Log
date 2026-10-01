@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 app.use(express.json());
+app.use(express.static('public'))
 const port = 3000;
 const pool = require('./db');
 //main page
@@ -10,7 +11,7 @@ app.get('/', (req, res) => {
 //test page get
 app.get('/api/test', async (req, res) => {
   try{
-     const result = await pool.query('SELECT * FROM test');
+     const result = await pool.query('SELECT * FROM test ORDER BY id');
      res.json(result.rows);
   }
   catch (err) {
@@ -28,7 +29,7 @@ try{
     res.status(201).json(result.rows[0]);
   }
 catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(400).json({ error: err.message });
   }
 }
 );
