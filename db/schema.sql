@@ -8,5 +8,6 @@ CREATE TABLE reels (
   reactions INTEGER NOT NULL,
   view INTEGER NOT NULL,
   follows INTEGER NOT NULL,
+  comments INTEGER NOT NULL DEFAULT 0,
   subject TEXT NOT NULL
 );

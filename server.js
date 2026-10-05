@@ -27,10 +27,10 @@ app.get('/api/reels', async (req, res) => {
 app.post('/api/reels', async (req, res) => {
   console.log(req.body);
   try {
-    const { date_added, year, media_origin, music, artist, reactions, view, follows, subject } = req.body;
+    const { date_added, year, media_origin, music, artist, reactions, view, follows,comments, subject } = req.body;
     const result = await pool.query(
-      'INSERT INTO reels (date_added, year, media_origin, music, artist, reactions, view, follows, subject) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-      [date_added, year, media_origin, music, artist, reactions, view, follows, subject]
+      'INSERT INTO reels (date_added, year, media_origin, music, artist, reactions, view, follows, comments, subject) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 ,$10) RETURNING *',
+      [date_added, year, media_origin, music, artist, reactions, view, follows, comments, subject]
     );
     res.status(201).json(result.rows[0]);
   }
