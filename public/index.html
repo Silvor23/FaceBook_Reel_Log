@@ -1,80 +1,138 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="reels.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="UTF-8" />
     <title>FRL</title>
   </head>
   <body>
-    <p><a href="/addlog" class="button">Add reel</a></p>
-    <p id="message"></p>
-    <h2>FRL</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Date Of Published</th>
-          <th>
-            Year Of Event
-            <span class="sort">
-              <button class="sort-btn" data-col="year" data-dir="asc">▲</button>
-              <button class="sort-btn" data-col="year" data-dir="desc">
-                ▼
-              </button>
-            </span>
-          </th>
-          <th>Media Origin</th>
-          <th>Music</th>
-          <th>Artist</th>
-          <th>
-            Reactions
-            <span class="sort">
-              <button class="sort-btn" data-col="reactions" data-dir="asc">
-                ▲
-              </button>
-              <button class="sort-btn" data-col="reactions" data-dir="desc">
-                ▼
-              </button>
-            </span>
-          </th>
-          <th>
-            Views
-            <span class="sort">
-              <button class="sort-btn" data-col="view" data-dir="asc">▲</button>
-              <button class="sort-btn" data-col="view" data-dir="desc">
-                ▼
-              </button>
-            </span>
-          </th>
-          <th>
-            Follows
-            <span class="sort">
-              <button class="sort-btn" data-col="follows" data-dir="asc">
-                ▲
-              </button>
-              <button class="sort-btn" data-col="follows" data-dir="desc">
-                ▼
-              </button>
-            </span>
-          </th>
-          <th>
-            Comments
-            <span class="sort">
-              <button class="sort-btn" data-col="comments" data-dir="asc">
-                ▲
-              </button>
-              <button class="sort-btn" data-col="comments" data-dir="desc">
-                ▼
-              </button>
-            </span>
-          </th>
-          <th>Subject</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="rows"></tbody>
-    </table>
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="brand"><span class="logo">▶</span> ReelLog</div>
+        <div class="avatar">
+          <img src="/media/FacebookLogo.svg" alt="image" />
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="/">Dashboard</a>
+        <a href="#">Analytics</a>
+        <a href="#">Settings</a>
+      </div>
+    </nav>
+
+    <main class="page">
+      <div class="page-head">
+        <h1>Facebook Reels</h1>
+        <a href="/addlog" class="btn-add">+ Add New Reel</a>
+      </div>
+
+      <p id="message"></p>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <!-- keep your existing header row here, with the sort buttons and the Actions column -->
+            <p id="message"></p>
+            <h2>FRL</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Date Of Published</th>
+                  <th>
+                    Year Of Event
+                    <span class="sort">
+                      <button class="sort-btn" data-col="year" data-dir="asc">
+                        ▲
+                      </button>
+                      <button class="sort-btn" data-col="year" data-dir="desc">
+                        ▼
+                      </button>
+                    </span>
+                  </th>
+                  <th>Media Origin</th>
+                  <th>Music</th>
+                  <th>Artist</th>
+                  <th>
+                    Reactions
+                    <span class="sort">
+                      <button
+                        class="sort-btn"
+                        data-col="reactions"
+                        data-dir="asc"
+                      >
+                        ▲
+                      </button>
+                      <button
+                        class="sort-btn"
+                        data-col="reactions"
+                        data-dir="desc"
+                      >
+                        ▼
+                      </button>
+                    </span>
+                  </th>
+                  <th>
+                    Views
+                    <span class="sort">
+                      <button class="sort-btn" data-col="view" data-dir="asc">
+                        ▲
+                      </button>
+                      <button class="sort-btn" data-col="view" data-dir="desc">
+                        ▼
+                      </button>
+                    </span>
+                  </th>
+                  <th>
+                    Follows
+                    <span class="sort">
+                      <button
+                        class="sort-btn"
+                        data-col="follows"
+                        data-dir="asc"
+                      >
+                        ▲
+                      </button>
+                      <button
+                        class="sort-btn"
+                        data-col="follows"
+                        data-dir="desc"
+                      >
+                        ▼
+                      </button>
+                    </span>
+                  </th>
+                  <th>
+                    Comments
+                    <span class="sort">
+                      <button
+                        class="sort-btn"
+                        data-col="comments"
+                        data-dir="asc"
+                      >
+                        ▲
+                      </button>
+                      <button
+                        class="sort-btn"
+                        data-col="comments"
+                        data-dir="desc"
+                      >
+                        ▼
+                      </button>
+                    </span>
+                  </th>
+                  <th>Subject</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </main>
     <script>
       const message = document.getElementById("message");
       const rows = document.getElementById("rows");
@@ -92,12 +150,16 @@
         rows.innerHTML = "";
         data.forEach((row) => {
           const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${row.id}</td><td>${row.date_added}</td><td>${row.year}</td><td>${row.media_origin}</td>
-      <td>${row.music}</td><td>${row.artist}</td><td>${row.reactions}</td><td>${row.view}</td><td>${row.follows}</td>
-      <td>${row.comments}</td><td>${row.subject}</td><td>
-        <button class="delete-btn" data-id="${row.id}">Delete</button>
-        <button class="edit-btn" data-id="${row.id}">Edit</button>
-      </td>`;
+          tr.innerHTML = `<td>${row.id}</td><td>${row.date_added}</td><td>${row.year}</td>
+  <td><span class="pill ${row.media_origin === "AI" ? "pill-ai" : "pill-original"}">${row.media_origin}</span></td>
+  <td>${row.music}</td><td>${row.artist}</td><td>${row.reactions}</td><td>${row.view}</td><td>${row.follows}</td>
+  <td>${row.comments}</td><td>${row.subject}</td>
+  <td>
+    <div class="actions">
+      <button class="edit-btn" data-id="${row.id}">Modify</button>
+      <button class="delete-btn" data-id="${row.id}">Delete</button>
+    </div>
+  </td>`;
           rows.appendChild(tr);
         });
       }
