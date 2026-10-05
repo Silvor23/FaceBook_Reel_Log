@@ -15,14 +15,60 @@
         <tr>
           <th>ID</th>
           <th>Date Of Published</th>
-          <th>Year Of Event</th>
+          <th>
+            Year Of Event
+            <span class="sort">
+              <button class="sort-btn" data-col="year" data-dir="asc">▲</button>
+              <button class="sort-btn" data-col="year" data-dir="desc">
+                ▼
+              </button>
+            </span>
+          </th>
           <th>Media Origin</th>
           <th>Music</th>
           <th>Artist</th>
-          <th>Reactions</th>
-          <th>Views</th>
-          <th>Follows</th>
-          <th>Comments</th>
+          <th>
+            Reactions
+            <span class="sort">
+              <button class="sort-btn" data-col="reactions" data-dir="asc">
+                ▲
+              </button>
+              <button class="sort-btn" data-col="reactions" data-dir="desc">
+                ▼
+              </button>
+            </span>
+          </th>
+          <th>
+            Views
+            <span class="sort">
+              <button class="sort-btn" data-col="view" data-dir="asc">▲</button>
+              <button class="sort-btn" data-col="view" data-dir="desc">
+                ▼
+              </button>
+            </span>
+          </th>
+          <th>
+            Follows
+            <span class="sort">
+              <button class="sort-btn" data-col="follows" data-dir="asc">
+                ▲
+              </button>
+              <button class="sort-btn" data-col="follows" data-dir="desc">
+                ▼
+              </button>
+            </span>
+          </th>
+          <th>
+            Comments
+            <span class="sort">
+              <button class="sort-btn" data-col="comments" data-dir="asc">
+                ▲
+              </button>
+              <button class="sort-btn" data-col="comments" data-dir="desc">
+                ▼
+              </button>
+            </span>
+          </th>
           <th>Subject</th>
           <th>Actions</th>
         </tr>
@@ -32,41 +78,60 @@
     <script>
       const message = document.getElementById("message");
       const rows = document.getElementById("rows");
+      let reelsData = [];
+
+      // 1. Get the data from the server and keep it in reelsData
       async function loadRows() {
         const response = await fetch("/api/reels");
-        const data = await response.json();
+        reelsData = await response.json();
+        renderRows(reelsData);
+      }
+
+      // 2. Draw whatever list of rows it is given
+      function renderRows(data) {
         rows.innerHTML = "";
         data.forEach((row) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `<td>${row.id}</td><td>${row.date_added}</td><td>${row.year}</td><td>${row.media_origin}</td>
-          <td>${row.music}</td><td>${row.artist}</td><td>${row.reactions}</td><td>${row.view}</td><td>${row.follows}</td>
-          <td>${row.comments}</td><td>${row.subject}</td><td>
-  <button class="delete-btn" data-id="${row.id}">Delete</button>
-  <button class="edit-btn" data-id="${row.id}">Edit</button>
-</td>`;
+      <td>${row.music}</td><td>${row.artist}</td><td>${row.reactions}</td><td>${row.view}</td><td>${row.follows}</td>
+      <td>${row.comments}</td><td>${row.subject}</td><td>
+        <button class="delete-btn" data-id="${row.id}">Delete</button>
+        <button class="edit-btn" data-id="${row.id}">Edit</button>
+      </td>`;
           rows.appendChild(tr);
         });
       }
-      rows.addEventListener('click', async (event) => {
-  if (!event.target.classList.contains('delete-btn')) return;
-  const id = event.target.dataset.id;
-  if (!confirm('Delete reel ' + id + '?')) return;
-  await fetch('/api/reels/' + id, { method: 'DELETE' });
-  loadRows();
-});
-rows.addEventListener('click', async (event) => {
-  const id = event.target.dataset.id;
 
-  if (event.target.classList.contains('edit-btn')) {
-    window.location.href = '/editlog?id=' + id;
-  }
+      // 3. Edit and delete buttons (one listener for both)
+      rows.addEventListener("click", async (event) => {
+        const id = event.target.dataset.id;
 
-  if (event.target.classList.contains('delete-btn')) {
-    if (!confirm('Delete reel ' + id + '?')) return;
-    await fetch('/api/reels/' + id, { method: 'DELETE' });
-    loadRows();
-  }
-});
+        if (event.target.classList.contains("edit-btn")) {
+          window.location.href = "/editlog?id=" + id;
+        }
+
+        if (event.target.classList.contains("delete-btn")) {
+          if (!confirm("Delete reel " + id + "?")) return;
+          await fetch("/api/reels/" + id, { method: "DELETE" });
+          loadRows();
+        }
+      });
+
+      // 4. Sort buttons in the table header
+      document.querySelector("thead").addEventListener("click", (event) => {
+        const btn = event.target.closest(".sort-btn");
+        if (!btn) return;
+
+        const col = btn.dataset.col;
+        const dir = btn.dataset.dir;
+
+        const sorted = [...reelsData].sort((a, b) =>
+          dir === "asc" ? a[col] - b[col] : b[col] - a[col],
+        );
+
+        renderRows(sorted);
+      });
+
       loadRows();
     </script>
   </body>
