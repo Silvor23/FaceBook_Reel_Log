@@ -1,6 +1,12 @@
 CREATE TABLE reels (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  date_added DATE NOT NULL DEFAULT CURRENT_DATE,
-  -- your remaining columns here, one per line
+  date_added DATE NOT NULL ,
+  year SMALLINT,
+  media_origin TEXT NOT NULL,
+  music TEXT NOT NULL,
+  artist TEXT NOT NULL,
+  reactions INTEGER NOT NULL,
+  view INTEGER NOT NULL,
+  follows INTEGER NOT NULL,
   subject TEXT NOT NULL
 );
