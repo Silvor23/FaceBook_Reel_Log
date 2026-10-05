@@ -13,6 +13,10 @@ app.get('/', (req, res) => {
 app.get('/addlog', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'addlog.html'));
 });
+//edit log path
+app.get('/editlog', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'editlog.html'));
+});
 //reels page get
 app.get('/api/reels', async (req, res) => {
   try {
@@ -39,6 +43,48 @@ app.post('/api/reels', async (req, res) => {
   }
 }
 );
+//reels page delete
+app.delete('/api/reels/:id', async (req, res) => {
+  try {
+    const result = await pool.query('DELETE FROM reels WHERE id = $1 RETURNING *', [req.params.id]);
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Reel not found' });
+    res.json({ deleted: result.rows[0].id });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+//one reel get
+app.get('/api/reels/:id', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM reels WHERE id = $1', [req.params.id]);
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Reel not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+//update one reel
+app.put('/api/reels/:id', async (req, res) => {
+  try {
+    const { date_added, year, media_origin, music, artist, reactions, view, follows, comments, subject } = req.body;
+
+    const result = await pool.query(
+      `UPDATE reels
+       SET date_added=$1, year=$2, media_origin=$3, music=$4, artist=$5,
+           reactions=$6, view=$7, follows=$8, comments=$9, subject=$10
+       WHERE id=$11
+       RETURNING *`,
+      [date_added, year, media_origin, music, artist, reactions, view, follows, comments, subject, req.params.id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Reel not found' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 //confirm working server
 app.listen(port, () => {
   console.log(`listening on port ${port}`);

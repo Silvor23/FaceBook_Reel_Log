@@ -1,11 +1,19 @@
-GET http://localhost:3000/api/test
+GET http://localhost:3000/api/reels/10
+
 ###
 
-POST http://localhost:3000/api/test
+PUT http://localhost:3000/api/reels/10
 Content-Type: application/json
 
 {
-  "id": "2",
-  "name": "Ahmed",
-  "num": "17"
+  "date_added": "2026-10-14",
+  "year": 2025,
+  "media_origin": "Original",
+  "music": "calm down",
+  "artist": "me",
+  "reactions": 10,
+  "view": 20,
+  "follows": 5,
+  "comments": 2,
+  "subject": "changed"
 }

@@ -24,6 +24,7 @@
           <th>Follows</th>
           <th>Comments</th>
           <th>Subject</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody id="rows"></tbody>
@@ -39,10 +40,33 @@
           const tr = document.createElement("tr");
           tr.innerHTML = `<td>${row.id}</td><td>${row.date_added}</td><td>${row.year}</td><td>${row.media_origin}</td>
           <td>${row.music}</td><td>${row.artist}</td><td>${row.reactions}</td><td>${row.view}</td><td>${row.follows}</td>
-          <td>${row.comments}</td><td>${row.subject}</td>`;
+          <td>${row.comments}</td><td>${row.subject}</td><td>
+  <button class="delete-btn" data-id="${row.id}">Delete</button>
+  <button class="edit-btn" data-id="${row.id}">Edit</button>
+</td>`;
           rows.appendChild(tr);
         });
       }
+      rows.addEventListener('click', async (event) => {
+  if (!event.target.classList.contains('delete-btn')) return;
+  const id = event.target.dataset.id;
+  if (!confirm('Delete reel ' + id + '?')) return;
+  await fetch('/api/reels/' + id, { method: 'DELETE' });
+  loadRows();
+});
+rows.addEventListener('click', async (event) => {
+  const id = event.target.dataset.id;
+
+  if (event.target.classList.contains('edit-btn')) {
+    window.location.href = '/editlog?id=' + id;
+  }
+
+  if (event.target.classList.contains('delete-btn')) {
+    if (!confirm('Delete reel ' + id + '?')) return;
+    await fetch('/api/reels/' + id, { method: 'DELETE' });
+    loadRows();
+  }
+});
       loadRows();
     </script>
   </body>
