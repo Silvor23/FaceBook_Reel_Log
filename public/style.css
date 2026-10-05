@@ -7,7 +7,7 @@ body {
   font-family: system-ui, Arial, sans-serif;
   background: #f3f4f6;
   color: #1f2937;
-  max-width: 700px;
+  max-width: 1200px;
   margin: 40px auto;
   padding: 0 16px;
 }
@@ -110,4 +110,13 @@ tbody tr:nth-child(even) {
 
 tbody tr:hover {
   background: #eff6ff;
+}
+
+input::placeholder {
+  color: rgba(
+    129,
+    121,
+    121,
+    0.4
+  ); /* last number is alpha: 0 = invisible, 1 = solid */
 }
