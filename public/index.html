@@ -7,71 +7,25 @@
     <title>FRL</title>
   </head>
   <body>
-    <h1>Add to test table</h1>
-    <form id="testForm">
-      <p>
-        <label for="id">ID:</label>
-        <input type="number" id="id" required />
-      </p>
-      <p>
-        <label for="name">Name:</label>
-        <input type="text" id="name" required />
-      </p>
-      <p>
-        <label for="num">Number:</label>
-        <input type="number" id="num" required />
-      </p>
-      <button type="submit">Save</button>
-    </form>
+    <p><a href="/addlog" class="button">Add reel</a></p>
     <p id="message"></p>
-    <h2>Rows</h2>
+    <h2>FRL</h2>
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>Name</th>
-          <th>Number</th>
+          <th>Date Of Published</th>
+          <th>Year Of Event</th>
+          <th>Media Origin</th>
+          <th>Music</th>
+          <th>Artist</th>
+          <th>Reactions</th>
+          <th>Views</th>
+          <th>Follows</th>
+          <th>Subject</th>
         </tr>
       </thead>
       <tbody id="rows"></tbody>
     </table>
-    <script>
-      const form = document.getElementById("testForm");
-      const message = document.getElementById("message");
-      const rows = document.getElementById("rows");
-      async function loadRows() {
-        const response = await fetch("/api/test");
-        const data = await response.json();
-        rows.innerHTML = "";
-        data.forEach((row) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${row.id}</td><td>${row.name}</td><td>${row.num}</td>`;
-          rows.appendChild(tr);
-        });
-      }
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const body = {
-          id: Number(document.getElementById("id").value),
-          name: document.getElementById("name").value,
-          num: Number(document.getElementById("num").value),
-        };
-
-        const response = await fetch("/api/test", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          message.textContent = "Saved!";
-          form.reset();
-          loadRows();
-        } else {
-          message.textContent = "Error: :( " + data.error;
-        }
-      });
-      loadRows();
-    </script>
   </body>
 </html>

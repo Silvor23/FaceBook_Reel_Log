@@ -20,6 +20,21 @@ h1 {
 h2 {
   margin-top: 32px;
 }
+
+.button {
+  display: inline-block;
+  background: #2563eb;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.button:hover {
+  background: #1d4ed8;
+}
+
 form {
   background: #ffffff;
   padding: 24px;
